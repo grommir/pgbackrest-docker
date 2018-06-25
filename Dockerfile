@@ -18,7 +18,9 @@ RUN apt-get update \
 &&  chown postgres:postgres /etc/pgbackrest.conf  \
 &&  sh -c 'cd /root/pgbackrest-release-2.03/libc && perl Makefile.PL INSTALLMAN1DIR=none INSTALLMAN3DIR=none' \
 &&  make -C /root/pgbackrest-release-2.03/libc test  \
-&&  make -C /root/pgbackrest-release-2.03/libc install
-
-RUN rm -rf /var/lib/apt/lists/* \
+&&  make -C /root/pgbackrest-release-2.03/libc install \
+&& apt-get remove -y --purge libperl-dev build-essential libssl-dev wget \
+&& apt-get autoremove -y \
+&& apt-get clean \
+&& rm -rf /var/lib/apt/lists/* \
 && rm -rf /root/pgbackrest-release-2.03
